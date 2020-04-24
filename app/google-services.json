@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "729997600744",
+    "firebase_url": "https://akalaty-el-shaheya.firebaseio.com",
+    "project_id": "akalaty-el-shaheya",
+    "storage_bucket": "akalaty-el-shaheya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729997600744:android:b8c290bad889dc6d7ba65d",
+        "android_client_info": {
+          "package_name": "net.aymanx.ai.akalatyelsaheya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729997600744-fp3i98b1nggd345o489g4duvad8lmfht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.aymanx.ai.akalatyelsaheya",
+            "certificate_hash": "b9e78c6f52b89a022474f65f65644bcfc9cc451e"
+          }
+        },
+        {
+          "client_id": "729997600744-vsjp4e7520b26gqmpj0m2h077f5shtcv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjMtzcSZQl2-Oi8acOXTM8XGuvpsaK8pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729997600744-vsjp4e7520b26gqmpj0m2h077f5shtcv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
