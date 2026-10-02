@@ -54,7 +54,7 @@ public class FoodListActivity extends AppCompatActivity {
         if(getIntent() != null){
             categoryID=getIntent().getStringExtra("CategoryID");
         }
-        if (!categoryID.isEmpty() && categoryID != null ){
+        if (categoryID != null && !categoryID.isEmpty()){
             LoadListFood(categoryID);
 
         }
@@ -68,6 +68,7 @@ public class FoodListActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Food> foodOptions = new FirebaseRecyclerOptions.Builder<Food>()
                 .setQuery(searchByName, Food.class)
+                .setLifecycleOwner(this)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(foodOptions) {
@@ -91,7 +92,12 @@ public class FoodListActivity extends AppCompatActivity {
                     holder.setItemClickListener(new ItemClickListener() {
                         @Override
                         public void onClick(View view, int postion, Boolean isLongClick) {
-                            Toast.makeText(FoodListActivity.this, " "+foodModel.getName(), Toast.LENGTH_SHORT).show();
+                            Intent details = new Intent(FoodListActivity.this, FoodDetailsActivity.class);
+                            details.putExtra("FoodName", foodModel.getName());
+                            details.putExtra("FoodImage", foodModel.getImage());
+                            details.putExtra("FoodPrice", foodModel.getPrice());
+                            details.putExtra("FoodDescription", foodModel.getDescrpition());
+                            startActivity(details);
 
                         }
 
@@ -109,7 +115,6 @@ public class FoodListActivity extends AppCompatActivity {
 
 
             recyclerView_food.setAdapter(adapter);
-            adapter.startListening();
 
     }
 }

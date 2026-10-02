@@ -25,6 +25,7 @@ public class SignInActivity extends AppCompatActivity {
 
     EditText edPhoneNumber ,edtPawwordSignIn ;
     Button signInButton ;
+    private ProgressDialog activeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +44,33 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final String phone = edPhoneNumber.getText().toString().trim();
+                final String password = edtPawwordSignIn.getText().toString();
+                if (!phone.matches("\\+?[0-9]{6,20}") || password.isEmpty()) {
+                    Toast.makeText(SignInActivity.this, "Enter a valid phone number and password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                signInButton.setEnabled(false);
+
                 final ProgressDialog mDialog = new ProgressDialog(SignInActivity.this);
+                activeDialog = mDialog;
                 mDialog.setMessage("Please Waiting .....");
                 mDialog.show();
-                table_user.addValueEventListener(new ValueEventListener() {
+                table_user.child(phone).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         //check user is exist
-                        if (dataSnapshot.child(edPhoneNumber.getText().toString()).exists()) {
+                        if (isFinishing() || isDestroyed()) return;
+                        signInButton.setEnabled(true);
+                        mDialog.dismiss();
+                        activeDialog = null;
+                        if (dataSnapshot.exists()) {
 
 
                             //Get user info
-                            mDialog.dismiss();
-                            User user = dataSnapshot.child(edPhoneNumber.getText().toString()).getValue(User.class);
-                                if (user.getPassword()  != null && user.getPassword().equals(edtPawwordSignIn.getText().toString())) {
+                            User user = dataSnapshot.getValue(User.class);
+                                if (user != null && user.getPassword() != null && user.getPassword().equals(password)) {
                                     Toast.makeText(SignInActivity.this, "Sign In Successfully !", Toast.LENGTH_SHORT).show();
                                     Intent homeIntent = new Intent(SignInActivity.this,HomeActivity.class);
                                     Common.currentUser = user;
@@ -67,19 +80,28 @@ public class SignInActivity extends AppCompatActivity {
                                     Toast.makeText(SignInActivity.this, "Wrong Password !!", Toast.LENGTH_SHORT).show();
                                 }
                         }else {
-                            mDialog.dismiss();
                             Toast.makeText(SignInActivity.this, "User not exist in database", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        if (isFinishing() || isDestroyed()) return;
+                        mDialog.dismiss();
+                        activeDialog = null;
+                        signInButton.setEnabled(true);
+                        Toast.makeText(SignInActivity.this, "Unable to sign in. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
 
 
+    }
+    @Override
+    protected void onDestroy() {
+        if (activeDialog != null) activeDialog.dismiss();
+        activeDialog = null;
+        super.onDestroy();
     }
 }
