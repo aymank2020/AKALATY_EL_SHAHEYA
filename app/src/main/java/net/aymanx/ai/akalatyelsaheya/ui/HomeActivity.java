@@ -53,6 +53,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // The process may be recreated without the in-memory signed-in user.
+        if (Common.currentUser == null) {
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
@@ -94,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
 
          options = new FirebaseRecyclerOptions.Builder<Category>()
                 .setQuery(category, Category.class)
+                .setLifecycleOwner(this)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
@@ -134,7 +142,6 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }
         } ;
-        adapter.startListening();
         recyclerView_menu.setAdapter(adapter);
     }
 

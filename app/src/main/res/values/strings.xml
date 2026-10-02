@@ -22,4 +22,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="nmae_of_menu">Nmae of Menu</string>
 
+    <string name="food_price_label">Price: %1$s</string>
+    <string name="food_price_unavailable">Unavailable</string>
 </resources>
